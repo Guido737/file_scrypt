@@ -1,0 +1,39 @@
+import os
+import shutil
+
+def create_folder_tree_based_on_files(base_path, files):
+    folder_structure = set()
+    
+    for file_name in files:
+        file_extension = file_name.split('.')[-1]
+        folder_structure.add(file_extension)
+        if file_name == "scrypt.py":
+            folder_structure.add("python")
+    for folder in folder_structure:
+        folder_path = os.path.join(base_path, folder)
+        os.makedirs(folder_path, exist_ok=True)
+        print(f"Created folder: {folder_path}")
+
+def move_files_to_folders(base_path, files):
+    for file_name in files:
+        if file_name == "scrypt.py":
+            folder_name = "python"
+        else:
+            folder_name = file_name.split('.')[-1]
+        
+        folder_path = os.path.join(base_path, folder_name)
+        src = os.path.join(os.getcwd(), file_name)
+        dst = os.path.join(folder_path, file_name)
+        if os.path.exists(src):  
+            shutil.move(src, dst)
+            print(f"Moved {file_name} to {folder_path}")
+        else:
+            print(f"File {file_name} not found in the current directory")
+base_path = "tmp"
+files_to_move = ["a.txt", "b.txt", "c.txt", "a.pdf", "b.pdf", "c.pdf", "scrypt.py", "a.jpg"]
+
+create_folder_tree_based_on_files(base_path, files_to_move)
+move_files_to_folders(base_path, files_to_move)
+
+
+
